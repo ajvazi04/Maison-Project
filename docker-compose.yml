@@ -1,0 +1,69 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      AllowedHosts: "${DOMAIN:?Set DOMAIN in .env};localhost"
+      ADMIN_USERNAME: "${ADMIN_USERNAME:-admin}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:?Set a strong ADMIN_PASSWORD in .env}"
+      ConnectionStrings__MaisonDb: "Data Source=/data/maison.db"
+      DataProtection__KeysPath: /data/keys
+      ReverseProxy__TrustedProxy: 172.30.0.2
+      Payments__FrontendBaseUrl: "https://${DOMAIN:?Set DOMAIN in .env}"
+      Payments__PayPal__Mode: "${PAYPAL_MODE:-Sandbox}"
+      Payments__PayPal__ClientId: "${PAYPAL_CLIENT_ID:-}"
+      Payments__PayPal__Secret: "${PAYPAL_SECRET:-}"
+      Email__FrontendBaseUrl: "https://${DOMAIN:?Set DOMAIN in .env}"
+      Email__Smtp__Host: "${SMTP_HOST:-}"
+      Email__Smtp__Port: "${SMTP_PORT:-587}"
+      Email__Smtp__Username: "${SMTP_USERNAME:-}"
+      Email__Smtp__Password: "${SMTP_PASSWORD:-}"
+      Email__Smtp__FromAddress: "${SMTP_FROM_ADDRESS:-}"
+      Email__Smtp__FromName: "${SMTP_FROM_NAME:-Maison}"
+      Email__Smtp__EnableSsl: "${SMTP_ENABLE_SSL:-true}"
+    expose:
+      - "8080"
+    volumes:
+      - maison_data:/data
+    networks:
+      maison:
+        ipv4_address: 172.30.0.3
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: "${DOMAIN:?Set DOMAIN in .env}"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      maison:
+        ipv4_address: 172.30.0.2
+    depends_on:
+      - app
+
+volumes:
+  maison_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  maison:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

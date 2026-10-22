@@ -1,0 +1,24 @@
+name: Sugjero një përmirësim
+description: Ndihmo të përmirësojmë përvojën e blerësve.
+title: "[Ide]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Çfarë vështirësie ka përdoruesi?
+      description: Përshkruaj nevojën, jo vetëm zgjidhjen.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Si do ta lehtësonte përdorimin?
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privatësia
+      options:
+        - label: Sugjerimi nuk përfshin të dhëna personale ose informacione private.
+          required: true

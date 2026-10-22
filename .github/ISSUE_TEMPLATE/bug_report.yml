@@ -1,0 +1,36 @@
+name: Raporto një gabim
+description: Përshkruaj një problem që mund të riprodhohet.
+title: "[Gabim]: "
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Hapat për ta përsëritur
+      description: Shkruaj çfarë bëre, pa përfshirë të dhëna personale.
+      placeholder: Hapa faqen…, pastaj klikova…
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Çfarë prisje të ndodhte?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Çfarë ndodhi në të vërtetë?
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Shfletuesi dhe pajisja
+      placeholder: Chrome në Android, p.sh.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privatësia
+      options:
+        - label: Kontrollova që raporti të mos përmbajë email, fjalëkalime ose të dhëna porosie.
+          required: true

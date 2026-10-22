@@ -1,0 +1,20 @@
+MAISON — DYQANI
+
+1. Shpaketoje krejt ZIP-in në një dosje të kompjuterit.
+2. Hape dosjen dhe kliko dy herë MAISON.exe.
+3. Vendos fjalëkalimin e administratorit (së paku 12 karaktere), pastaj shtyp Enter ose kliko “Nise dyqanin”.
+4. Faqja hapet vetë në shfletues. Panelin e porosive hape nga dritarja MAISON.
+5. Kur të mbarosh, kliko “Ndalo dyqanin” ose mbylle dritaren MAISON.
+
+Porositë dhe produktet ruhen në këtë kompjuter, te:
+%LOCALAPPDATA%\Maison\Butik
+
+Mos e fshi këtë dosje nëse dëshiron t’i ruash porositë.
+Fjalëkalimi i administratorit caktohet përsëri sa herë që e nis aplikacionin
+dhe nuk ruhet në disk.
+
+E RËNDËSISHME:
+Kjo kopje punon vetëm në kompjuterin ku është hapur. Klientët e tjerë
+nuk i shohin këtu porositë e tyre dhe porositë nuk dërgohen te dyqani.
+Për shitje reale nga interneti nevojitet publikimi në një faqe publike
+me domain dhe hosting.

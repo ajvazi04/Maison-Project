@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:5000
+
+### Read reviews for a product
+GET {{baseUrl}}/api/products/1/reviews
+
+### Submit a product review
+POST {{baseUrl}}/api/products/1/reviews
+Content-Type: application/json
+
+{
+  "name": "Arta",
+  "rating": 5,
+  "comment": "Material shumë i mirë dhe madhësi e saktë."
+}
+
+### Submit a contact message
+POST {{baseUrl}}/api/contact
+Content-Type: application/json
+
+{
+  "name": "Arta",
+  "email": "arta@example.com",
+  "message": "Kam një pyetje për porosinë time."
+}
+
+### Read contact messages (requires admin login cookie)
+GET {{baseUrl}}/api/admin/contact-messages
