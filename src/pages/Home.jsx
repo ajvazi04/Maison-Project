@@ -5,6 +5,7 @@ import { Grid } from "../components/ProductCard";
 
 export default function Home() {
   const { products, audience } = useStore();
+  const audienceLabel = audience === "Femra" ? "Women" : "Men";
   const audienceProducts = products.filter(
     (product) => product.gender === audience,
   );
@@ -25,13 +26,13 @@ export default function Home() {
           <div className={`hero-image hero-image-${audience === "Femra" ? "femra" : "meshkuj"}`}>
             <img
               src="/foto/fotot/foto-cover.jpg"
-              alt={`Koleksioni Maison për ${audience.toLowerCase()}`}
+              alt={`Maison collection for ${audienceLabel.toLowerCase()}`}
             />
             <div className="hero-overlay">
-              <small>Koleksioni Maison · {audience}</small>
-              <h1>Stili yt, zgjedhja jote</h1>
+              <small>Maison Collection · {audienceLabel}</small>
+              <h1>Your style, your choice</h1>
               <Link className="btn hero-btn" to="/shop">
-                Zbulo koleksionin
+                Discover the collection
               </Link>
             </div>
           </div>
@@ -39,14 +40,14 @@ export default function Home() {
       </section>
       <div className="wrap">
         <section className="home-welcome">
-          <p className="eyebrow">Mirë se erdhe në Maison</p>
-          <h2>Gjej diçka që të përshtatet</h2>
+          <p className="eyebrow">Welcome to Maison</p>
+          <h2>Find something that suits you</h2>
           <p>
-            Shfleto koleksionin, ruaj të preferuarat dhe kthehu tek ato kur të
-            jesh gati.
+            Browse the collection, save your favourites and come back whenever
+            you are ready.
           </p>
         </section>
-        <h2>Kategoritë</h2>
+        <h2>Categories</h2>
         <div className="cats">
           {categories.map((c) => (
             <Link key={c} to={"/shop/" + c}>
@@ -56,18 +57,18 @@ export default function Home() {
         </div>
         <div className="home-featured-heading">
           <div>
-            <p className="eyebrow">Për ty · {audience}</p>
-            <h2>{bestSellers.length ? "Të preferuarat" : "Zgjedhje për ty"}</h2>
+            <p className="eyebrow">For you · {audience}</p>
+            <h2>{bestSellers.length ? "Favourites" : "Picked for you"}</h2>
           </div>
-          <Link to="/shop">Shiko të gjitha <span aria-hidden="true">↗</span></Link>
+          <Link to="/shop">View all <span aria-hidden="true">↗</span></Link>
         </div>
         {featuredProducts.length ? (
           <Grid items={featuredProducts} />
         ) : (
           <div className="empty">
-            Koleksioni po përditësohet.
+            The collection is being updated.
             <br />
-            <Link className="btn" to="/contact">Na kontakto</Link>
+            <Link className="btn" to="/contact">Contact us</Link>
           </div>
         )}
         <div className="ship">
@@ -82,31 +83,31 @@ export default function Home() {
         </div>
         <section className="home-help" aria-labelledby="home-help-title">
           <div className="home-help-heading">
-            <p className="eyebrow">Kemi kënaqësinë të të ndihmojmë</p>
-            <h2 id="home-help-title">Shërbime për blerje më të lehtë</h2>
+            <p className="eyebrow">We are happy to help</p>
+            <h2 id="home-help-title">Services for easier shopping</h2>
           </div>
           <div className="home-help-grid">
             <Link to="/order-tracking">
               <span className="home-help-icon" aria-hidden="true">01</span>
               <span>
-                <strong>Gjurmo porosinë</strong>
-                <small>Shiko statusin e porosisë me numrin dhe email-in.</small>
+                <strong>Track order</strong>
+                <small>Check order status using your order number and email.</small>
               </span>
               <span className="home-help-arrow" aria-hidden="true">↗</span>
             </Link>
             <Link to="/wishlist">
               <span className="home-help-icon" aria-hidden="true">02</span>
               <span>
-                <strong>Ruaj të preferuarat</strong>
-                <small>Mbaj afër produktet që të pëlqejnë.</small>
+                <strong>Save favourites</strong>
+                <small>Keep the pieces you love close.</small>
               </span>
               <span className="home-help-arrow" aria-hidden="true">↗</span>
             </Link>
             <Link to="/contact">
               <span className="home-help-icon" aria-hidden="true">03</span>
               <span>
-                <strong>Na kontakto</strong>
-                <small>Pyetje për produktet apo porosinë? Jemi këtu.</small>
+                <strong>Contact us</strong>
+                <small>Questions about products or orders? We are here.</small>
               </span>
               <span className="home-help-arrow" aria-hidden="true">↗</span>
             </Link>

@@ -13,7 +13,7 @@ export default function Contact() {
     try {
       await submitContactMessage(form);
       setForm({ name: "", email: "", message: "" });
-      setStatus("Mesazhi u dërgua. Faleminderit që na shkrove!");
+      setStatus("Your message was sent. Thank you for getting in touch!");
     } catch (error) {
       setStatus(error.message);
     } finally {
@@ -23,10 +23,10 @@ export default function Contact() {
 
   return (
     <section className="wrap contact-page">
-      <p className="eyebrow">MAISON · Kontakt</p>
-      <h1>Na kontakto</h1>
+      <p className="eyebrow">MAISON · Contact</p>
+      <h1>Contact us</h1>
       <p className="contact-intro">
-        Na shkruaj ose telefono për pyetje rreth produkteve dhe porosive.
+        Send us a message or call us with any questions about our products and orders.
       </p>
       <div className="contact-details">
         <div>
@@ -34,15 +34,15 @@ export default function Contact() {
           <a href="mailto:info@maison.example">info@maison.example</a>
         </div>
         <div>
-          <h2>Telefon</h2>
+          <h2>Phone</h2>
           <a href="tel:+38344000000">+383 44 000 000</a>
         </div>
       </div>
       <form className="contact-form" onSubmit={submit}>
-        <h2>Na shkruaj</h2>
+        <h2>Send us a message</h2>
         <div className="contact-fields">
           <label>
-            Emri
+            Name
             <input
               autoComplete="name"
               maxLength={80}
@@ -54,7 +54,7 @@ export default function Contact() {
             />
           </label>
           <label>
-            Emaili
+            Email
             <input
               autoComplete="email"
               maxLength={254}
@@ -68,7 +68,7 @@ export default function Contact() {
           </label>
         </div>
         <label>
-          Mesazhi yt
+          Your message
           <textarea
             maxLength={2000}
             minLength={3}
@@ -78,11 +78,11 @@ export default function Contact() {
             onChange={(event) =>
               setForm({ ...form, message: event.target.value })
             }
-            placeholder="Shkruaj pyetjen ose komentin tënd"
+            placeholder="Write your question or comment"
           />
         </label>
         <button className="btn" disabled={sending}>
-          {sending ? "Duke dërguar..." : "Dërgo mesazhin"}
+          {sending ? "Sending..." : "Send message"}
         </button>
         {status && (
           <p className="form-status" role="status">

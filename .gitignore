@@ -16,3 +16,4 @@ Maison.Api/publish/
 .env
 .env.*
 !.env.example
+.vercel

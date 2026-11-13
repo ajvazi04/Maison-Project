@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom";
 import { API_URL } from "../api";
 
 const STATUS_LABELS = {
-  Received: "Pranuar",
-  Confirmed: "Konfirmuar",
-  SentToCourier: "Dërguar te kurieri",
-  Delivered: "Dorëzuar",
-  Cancelled: "Anuluar",
+  Received: "Received",
+  Confirmed: "Confirmed",
+  SentToCourier: "Sent to courier",
+  Delivered: "Delivered",
+  Cancelled: "Cancelled",
 };
 const STATUS_STEPS = ["Received", "Confirmed", "SentToCourier", "Delivered"];
 
@@ -20,7 +20,7 @@ async function request(path, body) {
       body: JSON.stringify(body),
     });
   } catch {
-    throw new Error("Nuk mund të lidhemi me serverin. Provo përsëri.");
+    throw new Error("Unable to connect to the server. Please try again.");
   }
 
   const text = await response.text();
@@ -87,7 +87,7 @@ export default function OrderTracking() {
   };
 
   const cancel = async () => {
-    if (!window.confirm("A dëshiron vërtet ta anulosh këtë porosi?")) return;
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
     setLoading(true);
     setError("");
     setNotice("");
@@ -104,7 +104,7 @@ export default function OrderTracking() {
             : item,
         ),
       );
-      setNotice("Porosia u anulua me sukses.");
+      setNotice("The order was cancelled successfully.");
     } catch (requestError) {
       setError(requestError.message);
       if (requestError.status === 409) {
@@ -133,15 +133,15 @@ export default function OrderTracking() {
 
   return (
     <section className="wrap order-tracking">
-      <span className="eyebrow">Maison · Porositë</span>
-      <h1>Gjurmo porosinë</h1>
+      <span className="eyebrow">Maison · Orders</span>
+      <h1>Track order</h1>
       <p className="tracking-intro">
-        Shkruaj emrin, mbiemrin dhe email-in që përdore gjatë blerjes për të
-        parë porositë e tua.
+        Enter the first name, last name and email used during purchase to view
+        your orders.
       </p>
       <form className="tracking-form" onSubmit={track}>
         <label>
-          Emri
+          First name
           <input
             autoComplete="given-name"
             maxLength={80}
@@ -151,7 +151,7 @@ export default function OrderTracking() {
           />
         </label>
         <label>
-          Mbiemri
+          Last name
           <input
             autoComplete="family-name"
             maxLength={80}
@@ -161,7 +161,7 @@ export default function OrderTracking() {
           />
         </label>
         <label>
-          Email-i i porosisë
+          Order email
           <input
             autoComplete="email"
             maxLength={254}
@@ -172,7 +172,7 @@ export default function OrderTracking() {
           />
         </label>
         <button className="btn" disabled={loading}>
-          {loading ? "Duke kërkuar..." : "Gjurmo"}
+          {loading ? "Searching..." : "Track"}
         </button>
       </form>
       {error && (
@@ -187,8 +187,8 @@ export default function OrderTracking() {
       )}
 
       {orders.length > 1 && !order && (
-        <div className="tracking-order-choices" aria-label="Zgjidh porosinë">
-          <h2>U gjetën disa porosi. Zgjidh cilën dëshiron të shohësh:</h2>
+        <div className="tracking-order-choices" aria-label="Select order">
+          <h2>Multiple orders were found. Select the one you want to view:</h2>
           {orders.map((item) => (
             <button
               className="tracking-order-choice"
@@ -217,7 +217,7 @@ export default function OrderTracking() {
             </time>
           </div>
           {order.status === "Cancelled" ? (
-            <p className="tracking-cancelled">Kjo porosi është anuluar.</p>
+            <p className="tracking-cancelled">This order has been cancelled.</p>
           ) : (
             <ol className="tracking-steps">
               {STATUS_STEPS.map((status, index) => (
@@ -233,8 +233,8 @@ export default function OrderTracking() {
             </ol>
           )}
           <p className="tracking-disclaimer">
-            Këtu shfaqet statusi i porosisë; lokacioni i drejtpërdrejtë i
-            dërgesës nuk ofrohet nga sistemi.
+            This shows the current order status; live delivery location is not
+            provided by the system.
           </p>
           <ul className="tracking-items">
             {order.items.map((item, index) => (
@@ -246,7 +246,7 @@ export default function OrderTracking() {
             ))}
           </ul>
           <div className="tracking-total">
-            <span>Totali</span>
+            <span>Total</span>
             <strong>{money(order.total)}</strong>
           </div>
           {order.status === "Received" && (
@@ -255,7 +255,7 @@ export default function OrderTracking() {
               disabled={loading}
               onClick={cancel}
               type="button">
-              Anulo porosinë
+              Cancel order
             </button>
           )}
         </article>

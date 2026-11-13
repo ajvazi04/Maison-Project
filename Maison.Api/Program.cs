@@ -129,8 +129,9 @@ app.UseCors("Frontend");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-var indexFile = Path.Combine(app.Environment.WebRootPath, "index.html");
-var hasFrontend = File.Exists(indexFile);
+var webRootPath = app.Environment.WebRootPath;
+var indexFile = webRootPath is null ? null : Path.Combine(webRootPath, "index.html");
+var hasFrontend = indexFile is not null && File.Exists(indexFile);
 if (hasFrontend)
 {
     app.UseDefaultFiles();
@@ -138,7 +139,7 @@ if (hasFrontend)
 }
 app.MapControllers();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
-if (hasFrontend)
+if (hasFrontend && indexFile is not null)
 {
     app.MapFallback(async context =>
     {

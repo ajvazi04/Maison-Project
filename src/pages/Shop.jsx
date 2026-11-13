@@ -32,16 +32,16 @@ export default function Shop() {
   return (
     <div className="wrap shop">
       <aside className="side">
-        <h4>Kategoria</h4>
+        <h4>Category</h4>
         <Link to="/shop">
-          <button className={!cat ? "on" : ""}>Të gjitha</button>
+          <button className={!cat ? "on" : ""}>All</button>
         </Link>
         {categories.map((c) => (
           <Link key={c} to={"/shop/" + c}>
             <button className={cat === c ? "on" : ""}>{c}</button>
           </Link>
         ))}
-        <h4 style={{ marginTop: 20 }}>Çmimi maksimal: {eur(max)}</h4>
+        <h4 style={{ marginTop: 20 }}>Maximum price: {eur(max)}</h4>
         <input
           type="range"
           min="20"
@@ -55,22 +55,22 @@ export default function Shop() {
       <section>
         <div className="top">
           <span style={{ color: "var(--mut)" }}>
-            {list.length} produkte{bestSellersOnly ? " · Më të pëlqyerat" : ""}
-            {q && ` për “${q}”`}
+            {list.length} products{bestSellersOnly ? " · Best sellers" : ""}
+            {q && ` for “${q}”`}
           </span>
           <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            <option value="new">Më të rejat</option>
-            <option value="lo">Çmimi: ulët → lartë</option>
-            <option value="hi">Çmimi: lartë → ulët</option>
+            <option value="new">Newest</option>
+            <option value="lo">Price: low → high</option>
+            <option value="hi">Price: high → low</option>
           </select>
         </div>
         {list.length ? (
           <Grid items={list} />
         ) : (
           <div className="empty">
-            Nuk u gjet asnjë produkt.
+            No products were found.
             <br />
-            Provo të ndryshosh filtrat.
+            Try changing your filters.
           </div>
         )}
       </section>

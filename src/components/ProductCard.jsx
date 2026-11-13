@@ -29,16 +29,16 @@ export default function ProductCard({ p }) {
         <Photo p={p} />
       </Link>
       {p.sale ? (
-        <span className="tag">Ofertë</span>
+        <span className="tag">Sale</span>
       ) : p.isBestSeller ? (
-        <span className="tag">I pëlqyer</span>
+        <span className="tag">Popular</span>
       ) : p.isNew ? (
-        <span className="tag">E re</span>
+        <span className="tag">New</span>
       ) : null}
       <button
         className={"heart" + (on ? " on" : "")}
         onClick={() => toggleWish(p.id)}
-        aria-label={`${on ? "Hiq nga" : "Shto te"} të preferuarat: ${p.name}`}
+        aria-label={`${on ? "Remove from" : "Add to"} wishlist: ${p.name}`}
         aria-pressed={on}
         type="button">
         {on ? "♥" : "♡"}

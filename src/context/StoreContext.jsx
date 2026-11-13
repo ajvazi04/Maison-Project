@@ -35,10 +35,10 @@ export function StoreProvider({ children }) {
     try {
       const response = await fetch(`${API_URL}/api/products`, { signal });
       if (!response.ok)
-        throw new Error(`Serveri ktheu gabimin ${response.status}.`);
+        throw new Error(`The server returned an error (${response.status}).`);
       const result = await response.json();
       if (!Array.isArray(result))
-        throw new Error("Serveri ktheu katalog të pavlefshëm.");
+        throw new Error("The server returned an invalid catalog.");
       setProducts(result.map(classifyProduct));
       setBackendError("");
       return true;
@@ -46,7 +46,7 @@ export function StoreProvider({ children }) {
       if (error.name === "AbortError") return true;
       console.error("Katalogu nuk u ngarkua nga backend-i:", error);
       setBackendError(
-        "Lidhja me dyqanin u ndërpre. Shporta jote është ruajtur, por porosia mund të mos përfundojë.",
+        "The connection to the store was interrupted. Your cart is saved, but the order may not complete.",
       );
       return false;
     }
@@ -86,7 +86,7 @@ export function StoreProvider({ children }) {
   const toggleWish = (id) => {
     const has = wish.includes(id);
     setWish((w) => (has ? w.filter((x) => x !== id) : [...w, id]));
-    toast(has ? "U hoq nga të preferuarat" : "U shtua te të preferuarat");
+    toast(has ? "Removed from wishlist" : "Added to wishlist");
   };
   const addToCart = (id, size, color, qty) => {
     setCart((c) => {
@@ -96,14 +96,14 @@ export function StoreProvider({ children }) {
       if (i < 0) return [...c, { id, size, color, qty }];
       return c.map((l, j) => (j === i ? { ...l, qty: l.qty + qty } : l));
     });
-    toast("✓ Produkti u shtua në shportë");
+    toast("✓ Product added to cart");
   };
   const addVariantsToCart = (id, color, variants) => {
     const selected = Object.entries(variants)
       .filter(([, qty]) => qty > 0)
       .map(([size, qty]) => ({ id, size, color, qty }));
     if (!selected.length) {
-      toast("Zgjidh sasinë për të paktën një madhësi");
+      toast("Select a quantity for at least one size");
       return;
     }
     setCart((current) =>
@@ -120,7 +120,7 @@ export function StoreProvider({ children }) {
         );
       }, current),
     );
-    toast("✓ Madhësitë u shtuan në shportë");
+    toast("✓ Sizes added to cart");
   };
   const changeQty = (i, d) =>
     setCart((c) =>
@@ -169,10 +169,10 @@ export function StoreProvider({ children }) {
 
   const applyCoupon = (code) => {
     const c = COUPONS[code.trim().toUpperCase()];
-    if (!c) return toast("Kodi nuk ekziston");
-    if (sub < c.min) return toast("Minimumi i porosisë: €" + c.min);
+    if (!c) return toast("Code does not exist");
+    if (sub < c.min) return toast("Minimum order: €" + c.min);
     setCoupon({ ...c, code: code.trim().toUpperCase() });
-    toast("✓ Kuponi u aplikua");
+    toast("✓ Coupon applied");
   };
 
   return (

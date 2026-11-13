@@ -31,7 +31,7 @@ export default function Checkout() {
         if (active) setPaypalAvailable(options.paypal === true);
       })
       .catch((optionsError) => {
-        console.error("Mënyrat e pagesës nuk u ngarkuan:", optionsError);
+        console.error("Payment methods could not be loaded:", optionsError);
       });
     return () => {
       active = false;
@@ -41,25 +41,25 @@ export default function Checkout() {
   if (done)
     return (
       <div className="wrap empty">
-        <h3>Faleminderit për porosinë!</h3>
+        <h3>Thank you for your order!</h3>
         <p>
-          Porosia u pranua. Përdor emrin, mbiemrin dhe email-in për ta gjurmuar
-          ose anuluar.
+          Your order has been received. Use your first name, last name and email
+          to track or cancel it.
         </p>
         <Link className="btn" to="/order-tracking" state={done}>
-          Gjurmo porosinë
+          Track order
         </Link>
         <Link className="btn" to="/">
-          Kthehu në faqen kryesore
+          Back to home
         </Link>
       </div>
     );
   if (!cart.length)
     return (
       <div className="wrap empty">
-        <h3>Shporta është bosh</h3>
+        <h3>Your cart is empty</h3>
         <Link className="btn" to="/shop">
-          Shiko produktet
+          View products
         </Link>
       </div>
     );
@@ -94,7 +94,7 @@ export default function Checkout() {
         });
         const result = await response.json();
         if (!response.ok)
-          throw new Error(result.message || "Pagesa me PayPal nuk u përgatit.");
+          throw new Error(result.message || "PayPal payment was not prepared.");
 
         const approvalUrl = new URL(result.approvalUrl);
         if (
@@ -102,7 +102,7 @@ export default function Checkout() {
           (approvalUrl.hostname !== "paypal.com" &&
             !approvalUrl.hostname.endsWith(".paypal.com"))
         )
-          throw new Error("PayPal ktheu një adresë të pavlefshme pagese.");
+          throw new Error("PayPal returned an invalid payment URL.");
         window.location.assign(approvalUrl.href);
         return;
       }
@@ -116,7 +116,7 @@ export default function Checkout() {
       if (!response.ok) {
         const message = result.errors
           ? Object.values(result.errors).flat().join(" ")
-          : result.message || "Porosia nuk u pranua.";
+          : result.message || "The order was not accepted.";
         throw new Error(message);
       }
       setDone({
@@ -128,7 +128,7 @@ export default function Checkout() {
     } catch (err) {
       setError(
         err instanceof TypeError
-          ? "Nuk mundëm ta dërgojmë porosinë sepse lidhja u ndërpre. Shporta jote është ruajtur; provo përsëri pas pak."
+          ? "We could not send the order because the connection was interrupted. Your cart is saved; please try again shortly."
           : err.message,
       );
     } finally {
@@ -140,23 +140,23 @@ export default function Checkout() {
     <div className="wrap">
       <form className="two" onSubmit={submit}>
         <div>
-          <h3>Të dhënat e klientit</h3>
+          <h3>Customer details</h3>
           <div className="f2">
-            <input name="firstName" required maxLength="80" placeholder="Emri" />
-            <input name="lastName" required maxLength="80" placeholder="Mbiemri" />
+            <input name="firstName" required maxLength="80" placeholder="First name" />
+            <input name="lastName" required maxLength="80" placeholder="Last name" />
           </div>
           <div className="f2">
             <input name="email" required type="email" maxLength="254" placeholder="Email" />
             <label className="phone-field">
-              Telefon
+              Phone
               <span className="phone-input">
-                <span aria-label={`Kodi telefonik ${PHONE_COUNTRIES[ship].prefix}`}>
+                <span aria-label={`Phone code ${PHONE_COUNTRIES[ship].prefix}`}>
                   {PHONE_COUNTRIES[ship].flag} {PHONE_COUNTRIES[ship].prefix}
                 </span>
                 <input
                   autoComplete="tel-national"
                   aria-describedby="phone-help"
-                  aria-label={`Numri i telefonit pa kodin ${phoneConfig.prefix}`}
+                  aria-label={`Phone number without the ${phoneConfig.prefix} code`}
                   inputMode="tel"
                   maxLength={24}
                   minLength={phoneConfig.digits}
@@ -170,19 +170,19 @@ export default function Checkout() {
                     setPhoneNumber(digits.slice(0, phoneConfig.digits));
                   }}
                   pattern={`[0-9]{${phoneConfig.digits}}`}
-                  placeholder={`${phoneConfig.digits} shifra`}
+                  placeholder={`${phoneConfig.digits} digits`}
                   required
                   type="tel"
                   value={phoneNumber}
                 />
               </span>
               <small id="phone-help" className="field-hint">
-                Numri kombëtar ka {phoneConfig.digits} shifra. Kodi i shtetit shtohet
-                automatikisht; zeroja fillestare hiqet nëse e shkruan.
+                Domestic numbers have {phoneConfig.digits} digits. The country code is
+                added automatically; the leading zero is removed if entered.
               </small>
             </label>
           </div>
-          <h3 style={{ marginTop: 28 }}>Adresa e dërgesës</h3>
+          <h3 style={{ marginTop: 28 }}>Shipping address</h3>
           <div className="f2">
             <select
               value={ship}
@@ -201,11 +201,11 @@ export default function Checkout() {
               ))}
             </select>
             <select
-              aria-label="Qyteti"
+              aria-label="City"
               onChange={(event) => setCity(event.target.value)}
               required
               value={city}>
-              <option value="">Zgjidh qytetin</option>
+              <option value="">Select city</option>
               {CITIES[ship].map((name) => (
                 <option key={name} value={name}>
                   {name}
@@ -214,10 +214,10 @@ export default function Checkout() {
             </select>
           </div>
           <div className="f2">
-            <input name="address" required maxLength="200" placeholder="Adresa" />
-            <input name="postalCode" maxLength="20" placeholder="Kodi postar" />
+            <input name="address" required maxLength="200" placeholder="Address" />
+            <input name="postalCode" maxLength="20" placeholder="Postal code" />
           </div>
-          <h3 style={{ marginTop: 28 }}>Pagesa</h3>
+          <h3 style={{ marginTop: 28 }}>Payment</h3>
           <label className="rd payment-option">
             <input
               checked={paymentMethod === "CashOnDelivery"}
@@ -227,8 +227,8 @@ export default function Checkout() {
               value="CashOnDelivery"
             />
             <span>
-              <strong>Pagesa në dorëzim</strong>
-              <small>Paguaj kur të pranosh porosinë.</small>
+              <strong>Cash on delivery</strong>
+              <small>Pay when your order arrives.</small>
             </span>
           </label>
           <label className={`rd payment-option ${paypalAvailable ? "" : "unavailable"}`}>
@@ -241,17 +241,17 @@ export default function Checkout() {
               value="PayPal"
             />
             <span>
-              <strong>PayPal / kartelë bankare</strong>
+              <strong>PayPal / bank card</strong>
               <small>
                 {paypalAvailable
-                  ? "Paguaj përmes PayPal; pagesa me kartelë ofrohet nëse PayPal e mbështet për llogarinë dhe shtetin tënd."
-                  : "Për momentin nuk është në dispozicion. Zgjidh pagesën në dorëzim."}
+                  ? "Pay via PayPal; card payments are available when PayPal supports your account and country."
+                  : "Currently unavailable. Please choose cash on delivery."}
               </small>
             </span>
           </label>
           {paymentCancelled && (
             <p className="payment-note" role="status">
-              Pagesa u anulua në PayPal. Shporta jote është ruajtur.
+              The payment was cancelled in PayPal. Your cart is still saved.
             </p>
           )}
           {error && <p role="alert" style={{ color: "var(--err, #b42318)" }}>{error}</p>}
@@ -259,10 +259,10 @@ export default function Checkout() {
         <Summary>
           <button className="btn w" style={{ marginTop: 16 }} disabled={submitting}>
             {submitting
-              ? "Duke dërguar..."
+              ? "Submitting..."
               : paymentMethod === "PayPal"
-                ? "Vazhdo te PayPal"
-                : "Përfundo porosinë"}
+                ? "Continue to PayPal"
+                : "Complete order"}
           </button>
         </Summary>
       </form>

@@ -7,9 +7,9 @@ export default function Summary({ children }) {
   const [code, setCode] = useState("");
   return (
     <div className="box">
-      <h3>Përmbledhja</h3>
+      <h3>Summary</h3>
       <label className="lbl" style={{ marginTop: 0 }}>
-        Transporti drejt
+        Shipping to
       </label>
       <select value={ship} onChange={(e) => setShip(e.target.value)}>
         {Object.entries(SHIP).map(([k, v]) => (
@@ -20,7 +20,7 @@ export default function Summary({ children }) {
       </select>
       <div style={{ display: "flex", gap: 8, margin: "14px 0" }}>
         <input
-          placeholder="Kodi i kuponit"
+          placeholder="Coupon code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
@@ -29,25 +29,25 @@ export default function Summary({ children }) {
           className="btn o"
           style={{ padding: "0 16px" }}
           onClick={() => applyCoupon(code)}>
-          Apliko
+          Apply
         </button>
       </div>
       <div className="row">
-        <span>Nëntotali</span>
+        <span>Subtotal</span>
         <span>{eur(t.sub)}</span>
       </div>
       <div className="row">
-        <span>Transporti</span>
+        <span>Shipping</span>
         <span>{eur(t.shipping)}</span>
       </div>
       {t.disc > 0 && (
         <div className="row">
-          <span>Zbritje</span>
+          <span>Discount</span>
           <span>-{eur(t.disc)}</span>
         </div>
       )}
       <div className="row t">
-        <span>Totali</span>
+        <span>Total</span>
         <span>{eur(t.total)}</span>
       </div>
       {children}

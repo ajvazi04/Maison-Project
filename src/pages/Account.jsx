@@ -37,20 +37,20 @@ export default function Account({ account, onAccountChange }) {
     if (mode === "reset") {
       const password = form.get("password");
       if (password !== form.get("confirmPassword")) {
-        setError("Fjalëkalimet nuk përputhen.");
+        setError("Passwords do not match.");
         setLoading(false);
         return;
       }
       const token = searchParams.get("token");
       if (!token) {
-        setError("Lidhja e rikthimit nuk është e plotë. Kërko një lidhje të re.");
+        setError("The reset link is incomplete. Please request a new link.");
         setLoading(false);
         return;
       }
       try {
         await accountRequest("password-reset/confirm", { token, password });
         setMode("login");
-        setNotice("Fjalëkalimi u ndryshua. Tani mund të kyçesh.");
+        setNotice("Password updated. You can now sign in.");
         navigate("/account?mode=login", { replace: true });
       } catch (requestError) {
         setError(requestError.message);
@@ -107,14 +107,14 @@ export default function Account({ account, onAccountChange }) {
   if (account) {
     return (
       <section className="wrap account-page">
-        <span className="eyebrow">Maison · Llogaria ime</span>
-        <h1>Përshëndetje, {account.firstName}</h1>
+        <span className="eyebrow">Maison · My account</span>
+        <h1>Hello, {account.firstName}</h1>
         <p className="account-intro">
-          Je kyçur me adresën <strong>{account.email}</strong>.
+          You are signed in with <strong>{account.email}</strong>.
         </p>
         <p className="account-note">
-          Mund të blesh edhe pa llogari. Ruaje numrin e porosisë dhe email-in
-          për ta gjurmuar porosinë.
+          You can shop without an account. Save your order number and email to
+          track your order.
         </p>
         {error && (
           <p className="account-error" role="alert">
@@ -127,7 +127,7 @@ export default function Account({ account, onAccountChange }) {
             disabled={loading}
             onClick={logout}
             type="button">
-            {loading ? "Duke dalë..." : "Dil nga llogaria"}
+            {loading ? "Signing out..." : "Sign out"}
           </button>
         </div>
       </section>
@@ -137,40 +137,40 @@ export default function Account({ account, onAccountChange }) {
   return (
     <section className="wrap account-page">
       <div className="account-card box">
-        <span className="eyebrow">Maison · Llogaria</span>
+        <span className="eyebrow">Maison · Account</span>
         <h1>
           {mode === "login"
-            ? "Kyçu"
+            ? "Sign in"
             : mode === "register"
-              ? "Krijo llogari"
+              ? "Create account"
               : mode === "forgot"
-                ? "Ke harruar fjalëkalimin?"
-                : "Vendos fjalëkalim të ri"}
+                ? "Forgot your password?"
+                : "Set a new password"}
         </h1>
         <p className="account-intro">
           {mode === "login" || mode === "register"
             ? mode === "login"
-              ? "Hyr në llogarinë tënde, ose vazhdo si mysafir në arkë."
-              : "Regjistrimi është opsional. Mund të blesh edhe si mysafir."
+              ? "Sign in to your account or continue as a guest at checkout."
+              : "Registration is optional. You can still shop as a guest."
             : mode === "forgot"
-              ? "Shkruaj email-in e llogarisë dhe do të të dërgojmë një lidhje të sigurt për ndryshimin e fjalëkalimit."
-              : "Lidhja është njëpërdorimëshe dhe skadon pas 60 minutave."}
+              ? "Enter your account email and we’ll send a secure link to change your password."
+              : "The link is single-use and expires after 60 minutes."}
         </p>
         {["login", "register"].includes(mode) ? (
-          <div className="account-tabs" aria-label="Hyrja në llogari">
+          <div className="account-tabs" aria-label="Account access">
             <button
               aria-pressed={mode === "login"}
               className={mode === "login" ? "on" : ""}
               onClick={() => changeMode("login")}
               type="button">
-              Hyr
+              Sign in
             </button>
             <button
               aria-pressed={mode === "register"}
               className={mode === "register" ? "on" : ""}
               onClick={() => changeMode("register")}
               type="button">
-              Regjistrohu
+              Register
             </button>
           </div>
         ) : (
@@ -178,14 +178,14 @@ export default function Account({ account, onAccountChange }) {
             className="account-back"
             onClick={() => changeMode("login")}
             type="button">
-            Kthehu te hyrja
+            Back to sign in
           </button>
         )}
         <form className="account-form" onSubmit={submit}>
           {mode === "register" && (
             <div className="f2">
               <label>
-                Emri
+                First name
                 <input
                   autoComplete="given-name"
                   maxLength={80}
@@ -194,7 +194,7 @@ export default function Account({ account, onAccountChange }) {
                 />
               </label>
               <label>
-                Mbiemri
+                Last name
                 <input
                   autoComplete="family-name"
                   maxLength={80}
@@ -218,7 +218,7 @@ export default function Account({ account, onAccountChange }) {
           )}
           {["login", "register", "reset"].includes(mode) && (
             <label>
-              {mode === "reset" ? "Fjalëkalimi i ri" : "Fjalëkalimi"}
+              {mode === "reset" ? "New password" : "Password"}
               <span className="password-field">
                 <input
                   autoComplete={
@@ -231,19 +231,19 @@ export default function Account({ account, onAccountChange }) {
                   type={showPassword ? "text" : "password"}
                 />
                 <button
-                  aria-label={showPassword ? "Fshih fjalëkalimin" : "Shfaq fjalëkalimin"}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="password-toggle"
                   onClick={() => setShowPassword((visible) => !visible)}
                   type="button">
-                  {showPassword ? "Fshih" : "Shfaq"}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </span>
-              {mode !== "login" && <small>Së paku 8 karaktere.</small>}
+              {mode !== "login" && <small>At least 8 characters.</small>}
             </label>
           )}
           {mode === "reset" && (
             <label>
-              Konfirmo fjalëkalimin e ri
+              Confirm new password
               <span className="password-field">
                 <input
                   autoComplete="new-password"
@@ -254,11 +254,11 @@ export default function Account({ account, onAccountChange }) {
                   type={showPassword ? "text" : "password"}
                 />
                 <button
-                  aria-label={showPassword ? "Fshih fjalëkalimin" : "Shfaq fjalëkalimin"}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="password-toggle"
                   onClick={() => setShowPassword((visible) => !visible)}
                   type="button">
-                  {showPassword ? "Fshih" : "Shfaq"}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </span>
             </label>
@@ -275,14 +275,14 @@ export default function Account({ account, onAccountChange }) {
           )}
           <button className="btn w" disabled={loading}>
             {loading
-              ? "Duke u përpunuar..."
+              ? "Processing..."
               : mode === "login"
-                ? "Hyr"
+                ? "Sign in"
                 : mode === "register"
-                  ? "Krijo llogari"
+                  ? "Create account"
                   : mode === "forgot"
-                    ? "Dërgo lidhjen"
-                    : "Ndrysho fjalëkalimin"}
+                    ? "Send link"
+                    : "Update password"}
           </button>
         </form>
         {mode === "login" && (
@@ -291,10 +291,10 @@ export default function Account({ account, onAccountChange }) {
               className="account-forgot"
               onClick={() => changeMode("forgot")}
               type="button">
-              Ke harruar fjalëkalimin?
+              Forgot your password?
             </button>
             <Link className="account-guest" to="/shop">
-              Vazhdo si mysafir <span aria-hidden="true">↗</span>
+              Continue as guest <span aria-hidden="true">↗</span>
             </Link>
           </div>
         )}

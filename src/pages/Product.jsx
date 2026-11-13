@@ -70,7 +70,7 @@ function Detail({ p, products }) {
       setReviewName("");
       setReviewComment("");
       setRating(0);
-      setReviewStatus("Faleminderit për vlerësimin!");
+      setReviewStatus("Thank you for your review!");
     } catch (error) {
       setReviewStatus(error.message);
     } finally {
@@ -91,7 +91,7 @@ function Detail({ p, products }) {
   return (
     <div className="wrap">
       <div className="crumb">
-        <Link to="/">Kryefaqja</Link> /{" "}
+        <Link to="/">Home</Link> /{" "}
         <Link to={"/shop/" + p.cat}>{p.cat}</Link> / {p.name}
       </div>
       <div className="pd">
@@ -103,9 +103,9 @@ function Detail({ p, products }) {
             <Price p={p} />
           </div>
           <p style={{ color: "var(--mut)" }}>{p.desc}</p>
-          <div className="lbl">Ngjyra</div>
+          <div className="lbl">Colour</div>
           <Opts list={p.colors} val={color} set={setColor} />
-          <div className="lbl">Madhësitë dhe sasitë</div>
+          <div className="lbl">Sizes and quantities</div>
           <div className="size-quantities">
             {p.sizes.map((itemSize) => (
               <label className="size-quantity" key={itemSize}>
@@ -113,14 +113,14 @@ function Detail({ p, products }) {
                 <div className="qty">
                   <button
                     type="button"
-                    aria-label={`Zvogëlo sasinë ${itemSize}`}
+                    aria-label={`Decrease quantity for ${itemSize}`}
                     onClick={() =>
                       setSizeQuantity(itemSize, (quantities[itemSize] || 0) - 1)
                     }>
                     −
                   </button>
                   <input
-                    aria-label={`Sasia ${itemSize}`}
+                    aria-label={`Quantity for ${itemSize}`}
                     type="number"
                     min="0"
                     max="20"
@@ -131,7 +131,7 @@ function Detail({ p, products }) {
                   />
                   <button
                     type="button"
-                    aria-label={`Rrit sasinë ${itemSize}`}
+                    aria-label={`Increase quantity for ${itemSize}`}
                     onClick={() =>
                       setSizeQuantity(itemSize, (quantities[itemSize] || 0) + 1)
                     }>
@@ -147,7 +147,7 @@ function Detail({ p, products }) {
               style={{ flex: 1 }}
               type="button"
               onClick={add}>
-              Shto madhësitë në shportë
+              Add sizes to cart
             </button>
             <button
               className="btn o"
@@ -157,15 +157,15 @@ function Detail({ p, products }) {
             </button>
           </div>
           <p style={{ color: "var(--mut)", marginTop: 22, fontSize: 12 }}>
-            Transport në Kosovë, Shqipëri dhe Maqedoni · Pagesa në dorëzim
+            Delivery in Kosovo, Albania and North Macedonia · Cash on delivery
           </p>
         </div>
       </div>
       <section className="reviews" aria-labelledby="reviews-title">
         <div className="reviews-heading">
           <div>
-            <span className="eyebrow">Përvoja e klientëve</span>
-            <h2 id="reviews-title">Vlerësimet</h2>
+            <span className="eyebrow">Customer experience</span>
+            <h2 id="reviews-title">Reviews</h2>
           </div>
           <div className="rating-summary">
             <strong>
@@ -173,42 +173,42 @@ function Detail({ p, products }) {
                 ? reviewData.averageRating.toFixed(1)
                 : "—"}
             </strong>
-            <span aria-label={`${reviewData.reviewCount} vlerësime`}>
+            <span aria-label={`${reviewData.reviewCount} ratings`}>
               {"★".repeat(Math.round(reviewData.averageRating))}
               {"☆".repeat(5 - Math.round(reviewData.averageRating))}
             </span>
-            <small>{reviewData.reviewCount} vlerësime</small>
+            <small>{reviewData.reviewCount} ratings</small>
           </div>
         </div>
         <div className="review-layout">
           <form className="review-form" onSubmit={submitReview}>
-            <h3>Lëre vlerësimin tënd</h3>
-            <label htmlFor="review-name">Emri</label>
+            <h3>Leave your review</h3>
+            <label htmlFor="review-name">Name</label>
             <input
               id="review-name"
               maxLength={80}
               required
               value={reviewName}
               onChange={(event) => setReviewName(event.target.value)}
-              placeholder="Emri yt"
+              placeholder="Your name"
             />
-            <span className="review-label">Vlerësimi</span>
+            <span className="review-label">Rating</span>
             <div
               className="rating-input"
               role="group"
-              aria-label="Vlerësimi nga 1 deri në 5 yje">
+              aria-label="Rating from 1 to 5 stars">
               {[1, 2, 3, 4, 5].map((value) => (
                 <button
                   key={value}
                   type="button"
-                  aria-label={`${value} yje`}
+                  aria-label={`${value} stars`}
                   aria-pressed={rating === value}
                   onClick={() => setRating(value)}>
                   {value <= rating ? "★" : "☆"}
                 </button>
               ))}
             </div>
-            <label htmlFor="review-comment">Komenti</label>
+            <label htmlFor="review-comment">Comment</label>
             <textarea
               id="review-comment"
               maxLength={1000}
@@ -217,10 +217,10 @@ function Detail({ p, products }) {
               rows={4}
               value={reviewComment}
               onChange={(event) => setReviewComment(event.target.value)}
-              placeholder="Si të duket ky produkt?"
+              placeholder="How does this product look?"
             />
             <button className="btn" disabled={reviewSubmitting || !rating}>
-              {reviewSubmitting ? "Duke dërguar..." : "Dërgo vlerësimin"}
+              {reviewSubmitting ? "Submitting..." : "Send review"}
             </button>
             {reviewStatus && (
               <p className="form-status" role="status">
@@ -242,7 +242,7 @@ function Detail({ p, products }) {
                   </div>
                   <span
                     className="review-stars"
-                    aria-label={`${review.rating} nga 5 yje`}>
+                    aria-label={`${review.rating} out of 5 stars`}>
                     {"★".repeat(review.rating)}
                     {"☆".repeat(5 - review.rating)}
                   </span>
@@ -251,7 +251,7 @@ function Detail({ p, products }) {
               ))
             ) : (
               <p className="review-empty">
-                Ende nuk ka vlerësime për këtë produkt.
+                No reviews have been left for this product yet.
               </p>
             )}
           </div>
@@ -259,7 +259,7 @@ function Detail({ p, products }) {
       </section>
       {rel.length > 0 && (
         <>
-          <h2>Produkte të ngjashme</h2>
+          <h2>Related products</h2>
           <Grid items={rel} />
         </>
       )}
@@ -273,6 +273,6 @@ export default function Product() {
   return p ? (
     <Detail key={id} p={p} products={products} />
   ) : (
-    <div className="wrap empty">Produkti nuk u gjet.</div>
+    <div className="wrap empty">Product not found.</div>
   );
 }

@@ -75,15 +75,18 @@ export default function Header({ theme, onToggleTheme, account }) {
         <Link className="logo header-logo" to="/">
           MAISON
         </Link>
-        <div className="audience-switch" aria-label="Zgjidh koleksionin">
-          {["Femra", "Meshkuj"].map((option) => (
+        <div className="audience-switch" aria-label="Choose collection">
+          {[
+            { label: "Women", value: "Femra" },
+            { label: "Men", value: "Meshkuj" },
+          ].map(({ label, value }) => (
             <button
-              key={option}
+              key={value}
               type="button"
-              className={audience === option ? "on" : ""}
-              aria-pressed={audience === option}
-              onClick={() => setAudience(option)}>
-              {option}
+              className={audience === value ? "on" : ""}
+              aria-pressed={audience === value}
+              onClick={() => setAudience(value)}>
+              {label}
             </button>
           ))}
         </div>
@@ -98,7 +101,7 @@ export default function Header({ theme, onToggleTheme, account }) {
             aria-autocomplete="list"
             aria-controls="product-suggestions"
             aria-expanded={isSearchOpen && suggestions.length > 0}
-            aria-label="Kërko produkte"
+            aria-label="Search products"
             autoComplete="off"
             className="sr header-search"
             onChange={(event) => {
@@ -109,8 +112,7 @@ export default function Header({ theme, onToggleTheme, account }) {
             onBlur={() => setIsSearchOpen(false)}
             onFocus={() => setIsSearchOpen(true)}
             onKeyDown={handleSearchKeyDown}
-            placeholder="Kërko produkte…"
-            role="combobox"
+            placeholder=            "Search products…"            role="combobox"
             value={searchText}
           />
           {isSearchOpen && suggestions.length > 0 && (
@@ -147,10 +149,10 @@ export default function Header({ theme, onToggleTheme, account }) {
           ♡<b>{wish.length}</b>
         </Link>
         <Link className="ic cart-action" to="/cart">
-          Shporta<b>{count}</b>
+          Cart<b>{count}</b>
         </Link>
         <Link className="ic account-nav" to="/account">
-          {account ? account.firstName : "Hyr / Regjistrohu"}
+          {account ? account.firstName : "Sign in / Register"}
         </Link>
         <button
           className="theme-toggle"
@@ -159,10 +161,10 @@ export default function Header({ theme, onToggleTheme, account }) {
           role="switch"
           aria-checked={theme === "dark"}
           aria-label={
-            theme === "dark" ? "Kalo në temë të çelët" : "Kalo në temë të errët"
+            theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
           }
           title={
-            theme === "dark" ? "Kalo në temë të çelët" : "Kalo në temë të errët"
+            theme === "dark" ? "Switch to light theme" : "Switch to dark theme"
           }>
           <span className="switch-icon switch-sun" aria-hidden="true">
             ☀
@@ -172,18 +174,18 @@ export default function Header({ theme, onToggleTheme, account }) {
           </span>
           <span className="switch-thumb" aria-hidden="true" />
         </button>
-        <nav className="category-nav" aria-label="Kategoritë kryesore">
+        <nav className="category-nav" aria-label="Main categories">
           <NavLink to="/shop" end>
-            Të gjitha
+            All
           </NavLink>
           {categories.map((category) => (
             <NavLink key={category} to={`/shop/${category}`}>
               {category}
             </NavLink>
           ))}
-          <NavLink to="/shop?bestSeller=1">Më të pëlqyerat</NavLink>
-          <NavLink to="/order-tracking">Gjurmo porosinë</NavLink>
-          <NavLink to="/contact">Na kontakto</NavLink>
+          <NavLink to="/shop?bestSeller=1">Best sellers</NavLink>
+          <NavLink to="/order-tracking">Track order</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
         </nav>
       </div>
     </header>

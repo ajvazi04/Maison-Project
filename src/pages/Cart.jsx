@@ -8,10 +8,10 @@ export default function Cart() {
   if (!cart.length)
     return (
       <div className="wrap empty">
-        <h3>Shporta është bosh</h3>
-        <p>Shto produkte për të vazhduar.</p>
+        <h3>Your cart is empty</h3>
+        <p>Add products to continue.</p>
         <Link className="btn" to="/shop">
-          Shiko produktet
+          View products
         </Link>
       </div>
     );
@@ -19,7 +19,7 @@ export default function Cart() {
     <div className="wrap">
       <div className="two">
         <div>
-          <h3>Shporta ime</h3>
+          <h3>My cart</h3>
           {cart.map((l, i) => {
             const p = getProduct(l.id);
             if (!p) return null;
@@ -32,9 +32,9 @@ export default function Cart() {
                   <Link to={`/product/${p.id}`}>{p.name}</Link>
                   <div className="line-variants">
                     <label>
-                      <span>Madhësia</span>
+                      <span>Size</span>
                       <select
-                        aria-label={`Madhësia për ${p.name}`}
+                        aria-label={`Size for ${p.name}`}
                         value={l.size}
                         onChange={(e) =>
                           updateVariant(i, e.target.value, l.color)
@@ -45,9 +45,9 @@ export default function Cart() {
                       </select>
                     </label>
                     <label>
-                      <span>Ngjyra</span>
+                      <span>Color</span>
                       <select
-                        aria-label={`Ngjyra për ${p.name}`}
+                        aria-label={`Color for ${p.name}`}
                         value={l.color}
                         onChange={(e) =>
                           updateVariant(i, l.size, e.target.value)
@@ -68,7 +68,7 @@ export default function Cart() {
                   {eur(cur(p) * l.qty)}
                   <br />
                   <button className="rm" onClick={() => remove(i)}>
-                    Hiq
+                    Remove
                   </button>
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function Cart() {
         </div>
         <Summary>
           <Link className="btn w" style={{ marginTop: 16 }} to="/checkout">
-            Vazhdo te pagesa
+            Continue to checkout
           </Link>
         </Summary>
       </div>

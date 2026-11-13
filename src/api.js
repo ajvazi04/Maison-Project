@@ -15,7 +15,7 @@ async function request(path, options = {}) {
       },
     });
   } catch {
-    throw new Error("Serveri nuk po përgjigjet. Provo përsëri më vonë.");
+    throw new Error("The server is not responding. Please try again later.");
   }
 
   const text = await response.text();
@@ -60,7 +60,7 @@ export async function getCurrentAccount() {
       credentials: "include",
     });
   } catch {
-    throw new Error("Nuk mund të lidhemi me serverin. Provo përsëri.");
+    throw new Error("Unable to connect to the server. Please try again.");
   }
   if (response.status === 401) return null;
   if (!response.ok) throw new Error(`Gabim nga serveri (${response.status}).`);
@@ -77,7 +77,7 @@ export async function accountRequest(action, body) {
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
-    throw new Error("Nuk mund të lidhemi me serverin. Provo përsëri.");
+    throw new Error("Unable to connect to the server. Please try again.");
   }
 
   const text = await response.text();

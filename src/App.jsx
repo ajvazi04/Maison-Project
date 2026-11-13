@@ -77,15 +77,15 @@ export default function App() {
         <Link className="logo" to="/">
           MAISON
         </Link>
-        <p className="eyebrow">Koleksioni yt</p>
-        <h1>Për kë po kërkon?</h1>
-        <p>Zgjidh koleksionin për të parë veshje dhe këpucë të përshtatura.</p>
+        <p className="eyebrow">Your collection</p>
+        <h1>Who are you shopping for?</h1>
+        <p>Select a collection to explore curated clothing and footwear.</p>
         <div className="audience-choices">
           <button type="button" onClick={() => setAudience("Femra")}>
-            Femra
+            Women
           </button>
           <button type="button" onClick={() => setAudience("Meshkuj")}>
-            Meshkuj
+            Men
           </button>
         </div>
       </main>
@@ -99,7 +99,7 @@ export default function App() {
         <div role="status" className="backend-warning">
           {backendError}
           <button type="button" onClick={retryProducts}>
-            Provo përsëri
+            Try again
           </button>
         </div>
       )}
@@ -124,7 +124,7 @@ export default function App() {
           <Route path="/admin/porosite" element={<AdminOrders />} />
           <Route
             path="*"
-            element={<div className="wrap empty">Faqja nuk u gjet.</div>}
+            element={<div className="wrap empty">Page not found.</div>}
           />
         </Routes>
       </main>

@@ -27,7 +27,7 @@ export default function PaymentReturn() {
     if (!attemptId || !paypalOrderId) {
       setState({
         loading: false,
-        error: "Të dhënat e kthimit nga PayPal mungojnë. Kontrollo statusin e pagesës.",
+        error: "The PayPal return data is missing. Please check the payment status.",
         customer: null,
       });
       return () => {
@@ -44,7 +44,7 @@ export default function PaymentReturn() {
       .then(async (response) => {
         const result = await response.json();
         if (!response.ok)
-          throw new Error(result.message || "Pagesa nuk mund të konfirmohej.");
+          throw new Error(result.message || "The payment could not be confirmed.");
         return result;
       })
       .then((customer) => {
@@ -67,29 +67,29 @@ export default function PaymentReturn() {
       {state.loading ? (
         <>
           <span className="eyebrow">Maison · PayPal</span>
-          <h1>Po konfirmojmë pagesën</h1>
-          <p>Mbaje këtë faqe hapur derisa të përfundojë verifikimi.</p>
+          <h1>Confirming payment</h1>
+          <p>Please keep this page open until the verification is complete.</p>
         </>
       ) : state.customer ? (
         <>
-          <span className="eyebrow">Maison · Pagesa</span>
-          <h1>Pagesa u konfirmua</h1>
-          <p>Porosia u regjistrua me sukses. Faleminderit!</p>
+          <span className="eyebrow">Maison · Payment</span>
+          <h1>Payment confirmed</h1>
+          <p>Your order has been registered successfully. Thank you!</p>
           <Link className="btn" to="/order-tracking" state={state.customer}>
-            Gjurmo porosinë
+            Track order
           </Link>
           <Link className="btn o" to="/">
-            Kthehu në faqen kryesore
+            Back to home
           </Link>
         </>
       ) : (
         <>
           <span className="eyebrow">Maison · PayPal</span>
-          <h1>Pagesa nuk u konfirmua</h1>
+          <h1>Payment not confirmed</h1>
           <p className="payment-error" role="alert">{state.error}</p>
-          <p>Nëse PayPal tregon se shuma është marrë, kontakto Maison para se të provosh sërish.</p>
+          <p>If PayPal shows that the amount was charged, contact Maison before trying again.</p>
           <Link className="btn" to="/checkout">
-            Kthehu te arka
+            Back to checkout
           </Link>
         </>
       )}

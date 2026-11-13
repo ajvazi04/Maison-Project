@@ -3,11 +3,11 @@ import { API_URL } from "../api";
 
 const PAGE_SIZE = 100;
 const STATUS_LABELS = {
-  Received: "Pranuar",
-  Confirmed: "Konfirmuar",
-  SentToCourier: "Dërguar te kurieri",
-  Delivered: "Dorëzuar",
-  Cancelled: "Anuluar",
+  Received: "Received",
+  Confirmed: "Confirmed",
+  SentToCourier: "Sent to courier",
+  Delivered: "Delivered",
+  Cancelled: "Cancelled",
 };
 const NEXT_STATUSES = {
   Received: ["Confirmed", "Cancelled"],
@@ -101,7 +101,7 @@ export default function AdminOrders() {
     } catch (err) {
       if (err.status === 401) {
         setIsAuthenticated(false);
-        setError("Sesioni ka skaduar. Hyr përsëri si administrator.");
+        setError("Your session has expired. Please sign in again as an administrator.");
       } else {
         setError(err.message);
       }
@@ -118,7 +118,7 @@ export default function AdminOrders() {
     } catch (err) {
       if (err.status === 401) {
         setIsAuthenticated(false);
-        setError("Sesioni ka skaduar. Hyr përsëri si administrator.");
+        setError("Your session has expired. Please sign in again as an administrator.");
       } else {
         setError(err.message);
       }
@@ -186,7 +186,7 @@ export default function AdminOrders() {
   const archiveOrder = async (order) => {
     if (
       !window.confirm(
-        "A dëshiron ta fshehësh këtë porosi nga lista aktive? Porosia do të ruhet në databazë.",
+        "Do you want to hide this order from the active list? It will be kept in the database.",
       )
     )
       return;
@@ -208,12 +208,12 @@ export default function AdminOrders() {
     return (
       <section className="admin-page wrap">
         <div className="admin-login box">
-          <span className="eyebrow">Maison · Administrim</span>
-          <h1>Porositë e kësaj jave</h1>
-          <p>Hyr me kredencialet e administratorit për të parë porositë.</p>
+          <span className="eyebrow">Maison · Administration</span>
+          <h1>This week’s orders</h1>
+          <p>Sign in with the administrator credentials to view orders.</p>
           <form onSubmit={login}>
             <label>
-              Emri i përdoruesit
+              Username
               <input
                 autoComplete="username"
                 required
@@ -222,7 +222,7 @@ export default function AdminOrders() {
               />
             </label>
             <label>
-              Fjalëkalimi
+              Password
               <input
                 autoComplete="current-password"
                 required
@@ -237,7 +237,7 @@ export default function AdminOrders() {
               </p>
             )}
             <button className="btn w" disabled={loading}>
-              {loading ? "Duke u kyçur..." : "Hyr"}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
         </div>
@@ -250,16 +250,16 @@ export default function AdminOrders() {
     <section className="admin-page wrap">
       <div className="admin-heading">
         <div>
-          <span className="eyebrow">Maison · Administrim</span>
+          <span className="eyebrow">Maison · Administration</span>
           <h1>
             {view === "orders"
-              ? "Porositë e kësaj jave"
-              : "Mesazhet e klientëve"}
+              ? "This week’s orders"
+              : "Customer messages"}
           </h1>
           <p>
             {view === "orders"
-              ? "Java llogaritet nga e hëna, sipas orës lokale të shfletuesit."
-              : "Mesazhet më të fundit të dërguara nga faqja Na kontakto."}
+              ? "The week is counted from Monday according to the browser’s local time."
+              : "The latest messages sent from the Contact page."}
           </p>
         </div>
         <div className="admin-actions">
@@ -267,10 +267,10 @@ export default function AdminOrders() {
             className="btn o"
             onClick={view === "orders" ? loadOrders : loadContactMessages}
             disabled={loading}>
-            {loading ? "Duke rifreskuar..." : "Rifresko"}
+            {loading ? "Refreshing..." : "Refresh"}
           </button>
           <button className="btn o" onClick={logout}>
-            Dil
+            Sign out
           </button>
         </div>
       </div>
@@ -278,14 +278,14 @@ export default function AdminOrders() {
       <div
         className="admin-tabs"
         role="tablist"
-        aria-label="Pamja e administrimit">
+        aria-label="Administration view">
         <button
           type="button"
           role="tab"
           aria-selected={view === "orders"}
           className={view === "orders" ? "on" : ""}
           onClick={() => setView("orders")}>
-          Porositë
+          Orders
         </button>
         <button
           type="button"
@@ -293,7 +293,7 @@ export default function AdminOrders() {
           aria-selected={view === "messages"}
           className={view === "messages" ? "on" : ""}
           onClick={() => setView("messages")}>
-          Mesazhet ({contactMessages.length})
+          Messages ({contactMessages.length})
         </button>
       </div>
 
@@ -307,19 +307,19 @@ export default function AdminOrders() {
         <>
           <div className="admin-stats">
             <div className="box">
-              <span>Porosi këtë javë</span>
+              <span>Orders this week</span>
               <strong>{totalCount}</strong>
             </div>
             <div className="box">
-              <span>Qarkullimi këtë javë</span>
+              <span>Turnover this week</span>
               <strong>{money(weeklyTotal)}</strong>
             </div>
           </div>
 
           {loading && !orders.length ? (
-            <p className="admin-empty">Duke ngarkuar porositë...</p>
+            <p className="admin-empty">Loading orders...</p>
           ) : !orders.length ? (
-            <div className="box admin-empty">Nuk ka ende porosi këtë javë.</div>
+            <div className="box admin-empty">There are no orders this week yet.</div>
           ) : (
             <div className="admin-orders">
               {orders.map((order) => (
@@ -339,7 +339,7 @@ export default function AdminOrders() {
 
                   <div className="admin-order-grid">
                     <div>
-                      <h2>Klienti</h2>
+                      <h2>Customer</h2>
                       <p>
                         {order.firstName} {order.lastName}
                       </p>
@@ -355,7 +355,7 @@ export default function AdminOrders() {
                       </p>
                     </div>
                     <div>
-                      <h2>Produktet</h2>
+                      <h2>Products</h2>
                       <ul className="admin-items">
                         {order.items.map((item, index) => (
                           <li
@@ -371,21 +371,21 @@ export default function AdminOrders() {
                     </div>
                     <div className="admin-total">
                       <span>
-                        Pagesa:{" "}
+                        Payment:{" "}
                         {order.paymentMethod === "PayPal"
                           ? "PayPal"
-                          : "Në dorëzim"}
+                          : "Cash on delivery"}
                       </span>
-                      <span>Nëntotali: {money(order.subtotal)}</span>
+                      <span>Subtotal: {money(order.subtotal)}</span>
                       {order.discount > 0 && (
-                        <span>Zbritja: −{money(order.discount)}</span>
+                        <span>Discount: −{money(order.discount)}</span>
                       )}
-                      <span>Transporti: {money(order.shipping)}</span>
-                      <strong>Totali: {money(order.total)}</strong>
+                      <span>Shipping: {money(order.shipping)}</span>
+                      <strong>Total: {money(order.total)}</strong>
                       <label>
-                        Statusi
+                        Status
                         <select
-                          aria-label={`Statusi i porosisë ${order.orderNumber}`}
+                          aria-label={`Order status ${order.orderNumber}`}
                           disabled={busyOrder === order.orderNumber}
                           value={order.status}
                           onChange={(event) =>
@@ -407,7 +407,7 @@ export default function AdminOrders() {
                           disabled={busyOrder === order.orderNumber}
                           onClick={() => archiveOrder(order)}
                           type="button">
-                          Fshi nga lista aktive
+                          Remove from active list
                         </button>
                       )}
                     </div>
@@ -423,22 +423,22 @@ export default function AdminOrders() {
                 className="btn o"
                 disabled={page <= 1}
                 onClick={() => setPage(page - 1)}>
-                Më të rejat
+                Newest
               </button>
               <span>
-                Faqja {page} / {pageCount}
+                Page {page} / {pageCount}
               </span>
               <button
                 className="btn o"
                 disabled={page >= pageCount}
                 onClick={() => setPage(page + 1)}>
-                Më të vjetrat
+                Older
               </button>
             </div>
           )}
         </>
       ) : loading && !contactMessages.length ? (
-        <p className="admin-empty">Duke ngarkuar mesazhet...</p>
+        <p className="admin-empty">Loading messages...</p>
       ) : contactMessages.length ? (
         <div className="admin-messages">
           {contactMessages.map((message) => (
@@ -454,17 +454,17 @@ export default function AdminOrders() {
               <a
                 className="btn o reply-message"
                 href={`mailto:${message.email}?subject=${encodeURIComponent(
-                  "Përgjigje për mesazhin tuaj - Maison",
+                  "Reply to your message - Maison",
                 )}&body=${encodeURIComponent(
-                  `Përshëndetje ${message.name},\n\nFaleminderit që kontaktuat Maison.\n\n`,
+                  `Hello ${message.name},\n\nThank you for contacting Maison.\n\n`,
                 )}`}>
-                Përgjigju me email
+                Reply by email
               </a>
             </article>
           ))}
         </div>
       ) : (
-        <div className="box admin-empty">Nuk ka ende mesazhe.</div>
+        <div className="box admin-empty">There are no messages yet.</div>
       )}
     </section>
   );

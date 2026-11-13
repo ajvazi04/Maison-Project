@@ -7,15 +7,15 @@ export default function Wishlist() {
   const items = wish.map(getProduct).filter(Boolean);
   return (
     <div className="wrap" style={{ paddingTop: 36 }}>
-      <h3>Të preferuarat</h3>
+      <h3>Your wishlist</h3>
       {items.length ? (
         <Grid items={items} />
       ) : (
         <div className="empty">
-          Nuk keni asnjë produkt të ruajtur.
+          You have no saved products.
           <br />
           <Link className="btn" to="/shop">
-            Shiko produktet
+            View products
           </Link>
         </div>
       )}
