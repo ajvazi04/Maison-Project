@@ -24,7 +24,8 @@ async function request(path, options = {}) {
     try {
       result = JSON.parse(text);
     } catch {
-      result = { message: text };
+      // Non-JSON responses (such as a hosting provider's HTML 404 page)
+      // must not be surfaced as user-facing API errors.
     }
   }
   if (!response.ok) {
