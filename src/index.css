@@ -1995,18 +1995,20 @@ button:disabled {
         "nav nav nav";
       grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 8px 10px;
-      padding: 10px 0;
+      padding: 10px 16px;
     }
     .header-logo {
       grid-area: brand;
       font-size: 15px;
+      padding-left: 4px;
     }
     .audience-switch {
       grid-area: audience;
     }
     .audience-switch button {
-      min-height: 40px;
-      padding: 6px 8px;
+      min-height: 44px;
+      padding: 8px 10px;
+      font-size: 12px;
     }
     .header-search {
       grid-area: search;
@@ -2016,27 +2018,49 @@ button:disabled {
     }
     .wishlist-action {
       grid-area: wishlist;
+      display: flex;
+      align-items: center;
       justify-self: start;
+      min-height: 44px;
+      padding: 8px 10px;
     }
     .cart-action {
       grid-area: cart;
+      display: flex;
+      align-items: center;
       justify-self: center;
+      min-height: 44px;
+      padding: 8px 10px;
     }
     .account-nav {
       grid-area: account;
       justify-self: end;
-      font-size: 10px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      font-size: 11px;
       letter-spacing: 0.04em;
     }
     .theme-toggle {
       grid-area: theme;
       justify-self: end;
+      width: 64px;
+      height: 36px;
+      flex-basis: 64px;
+    }
+    .theme-toggle .switch-thumb {
+      width: 28px;
+      height: 28px;
+    }
+    :root[data-theme="dark"] .theme-toggle .switch-thumb {
+      transform: translateX(28px);
     }
     .category-nav {
       grid-area: nav;
       width: 100%;
       justify-content: flex-start;
-      gap: 16px;
+      gap: 12px;
       padding: 8px 0 2px;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -2046,8 +2070,10 @@ button:disabled {
     }
     .category-nav a {
       display: flex;
-      min-height: 38px;
+      min-height: 44px;
       align-items: center;
+      padding: 0 2px;
+      font-size: 12px;
     }
     .hero-overlay {
       padding: 20px;
@@ -2127,6 +2153,8 @@ button:disabled {
     }
     .bar {
       column-gap: 6px;
+      padding-right: 12px;
+      padding-left: 12px;
     }
     .logo {
       letter-spacing: 0.2em;
