@@ -39,7 +39,8 @@ function Detail({ p, products }) {
     getProductReviews(p.id, controller.signal)
       .then(setReviewData)
       .catch((error) => {
-        if (error.name !== "AbortError") setReviewStatus(error.message);
+        if (error.name !== "AbortError")
+          console.error("Product reviews could not be loaded:", error);
       });
     return () => controller.abort();
   }, [p.id]);
@@ -72,7 +73,7 @@ function Detail({ p, products }) {
       setRating(0);
       setReviewStatus("Thank you for your review!");
     } catch (error) {
-      setReviewStatus(error.message);
+      console.error("Product review could not be submitted:", error);
     } finally {
       setReviewSubmitting(false);
     }
